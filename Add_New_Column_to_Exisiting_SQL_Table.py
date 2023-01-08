@@ -47,7 +47,6 @@ def downLoadData(pro):
         else:
             try:
                 df = pro.income(ts_code=codelist["ts_code"][i],start_date=start_date, end_date=end_date)
-                print(codelist["ts_code"][i],"added to append_codelist[]")
                 c_len = df.shape[0]  #Number of days
             except:
                 print("Failed to download", codelist["ts_code"][i])
