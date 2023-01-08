@@ -13,9 +13,22 @@ def downLoadData(pro):
 
     conn = sqlite3.connect("New_Stk_hist.sqlite")
     cursor = conn.cursor()
+
+    #Ask if the uswer want to re-start the Append_Progress
+    start_over = input("Enter: Do you want to reset the Append_Progress? (y or n)")
+    answer = start_over[0].lower()
+    if len(start_over) <1 or not answer in ['y','n']:
+        print('Please answer with y or n!')
+    elif answer=="y":
+        cursor.execute("DROP Table IF EXISTS Append_Progress ")
+        print("Starting a new Append_Progress...")
+    else:
+        print("Continue with last Append_Progress...")
+
     #Create a temporary table
     sql = "CREATE TABLE IF NOT EXISTS Add_Index (ts_code TEXT, ann_date TEXT,  total_revenue REAL, revenue REAL, UNIQUE(ts_code, ann_date))"
     cursor.execute(sql)
+
 
     #breakpoint recovery
     try:
@@ -54,9 +67,9 @@ def downLoadData(pro):
               except Exception as err:
                   print("Error:", err)
                   print("Failed to insert:", codelist["ts_code"][i])
-      sql = "INSERT OR IGNORE INTO Append_Progress(append_codelist) VALUES ('%s')" % (codelist["ts_code"][i])
-      cursor.execute(sql)
-      print(codelist["ts_code"][i],"added to append_codelist[]")
+        sql = "INSERT OR IGNORE INTO Append_Progress(append_codelist) VALUES ('%s')" % (codelist["ts_code"][i])
+        cursor.execute(sql)
+        print(codelist["ts_code"][i],"added to append_codelist[]")
     print("Successfully downloaded new data into Add_Index Table")
     sql = '''SELECT * FROM Financial LEFT JOIN Add_Index ON Add_Index.ann_date=Financial.ann_date AND Add_Index.ts_code=Financial.ts_code'''
     cursor.execute(sql)
