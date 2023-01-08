@@ -14,7 +14,7 @@ def downLoadData(pro):
     conn = sqlite3.connect("New_Stk_hist.sqlite")
     cursor = conn.cursor()
 
-    #Ask if the uswer want to re-start the Append_Progress
+    #Ask if user wants to re-start the Append_Progress
     start_over = input("Enter: Do you want to reset the Append_Progress? (y or n)")
     answer = start_over[0].lower()
     if len(start_over) <1 or not answer in ['y','n']:
